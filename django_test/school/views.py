@@ -9,19 +9,6 @@ class SchoolModelViewSet(viewsets.ModelViewSet):
     serializer_class = SchoolSerializer
     queryset = School.objects.all()
 
-    def get_serializer_class(self):
-        """ Custom serializer class getter.
-        In order to make students_max_number field "write_once"
-
-        :return: serializer class depends on request method
-        """
-        serializer_class = self.serializer_class
-
-        if self.request.method == 'PUT':
-            serializer_class = SchoolSerializerWithoutStudentsMaxNumber
-
-        return serializer_class
-
 
 class StudentModelViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer

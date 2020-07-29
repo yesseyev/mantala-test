@@ -5,7 +5,7 @@ from django.db import models
 
 class School(models.Model):
     name = models.CharField(max_length=20)
-    students_max_number = models.IntegerField(default=100)
+    students_max_number = models.IntegerField(default=100, editable=False)
 
     def __str__(self):
         return f'{self.name}({self.students_max_number})'
