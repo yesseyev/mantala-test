@@ -15,16 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
 
 from school.views import SchoolModelViewSet, StudentModelViewSet
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
+# Domain routes
 router.register('schools', SchoolModelViewSet, basename='school')
 router.register('students', StudentModelViewSet, basename='student')
+
+# Nested routes
+schools_router = routers.NestedDefaultRouter(router, 'schools', lookup='school')
+schools_router.register('students', StudentModelViewSet, basename='school-students')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('<int:id>/', include(router.urls)),
+    path('', include(schools_router.urls)),
 ]

@@ -27,6 +27,13 @@ class StudentModelViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
 
+    def get_queryset(self):
+        NESTED_PK = 'school_pk'
+        if NESTED_PK in self.kwargs:
+            return Student.objects.filter(school=self.kwargs[NESTED_PK])
+
+        return super().get_queryset()
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
