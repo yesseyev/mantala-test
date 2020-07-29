@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 
@@ -18,7 +20,23 @@ class Student(models.Model):
     def __str__(self):
         return f'{self.student_id}: {self.first_name} {self.last_name}'
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        # TODO: generate unique student_id (20 chars)
-        pass
+    @staticmethod
+    def __generate_id(length=20):
+        generated_id = uuid.uuid4().hex[:length]
+        while Student.objects.filter(student_id=generated_id).count() > 0:
+            generated_id = uuid.uuid4().hex[:length]
+
+        return generated_id
+
+    def save(self, *args, **kwargs):
+
+        if self._state.adding:
+            students_count = Student.objects.filter(school=self.school).count()
+
+            if students_count >= self.school.students_max_number:
+                raise ValueError('Maximum number of students exceed')
+
+        self.student_id = self.__generate_id()
+
+        super().save(*args, **kwargs)
+
