@@ -73,6 +73,16 @@ class SchoolTests(TestCase):
                 location='Lorem ipsum dolor sit amet, consectetur adipisicing elit.'  # 57 chars length
             )
 
+    def test_str(self):
+        school = School.objects.create(
+            name=self.name,
+            students_max_number=self.students_max_number,
+            established_in=self.established_in,
+            location=self.location,
+        )
+
+        self.assertEquals(school.__str__(), f'{school.name}({self.students_max_number})')
+
 
 class StudentTests(TestCase):
     """ Test module for Student model """
@@ -117,6 +127,7 @@ class StudentTests(TestCase):
         # school check
         self.assertEquals(school, student.school)
 
+    """ EXCEPTIONS check """
     def test_student_school_limit(self):
         students_max_number = 5
 
@@ -137,7 +148,7 @@ class StudentTests(TestCase):
                 school=school
             )
 
-        #
+        # Exceeding students_max_number value
         with self.assertRaises(ValueError):
             Student.objects.create(
                 first_name=f'{self.first_name}_fail',
@@ -146,3 +157,78 @@ class StudentTests(TestCase):
                 nationality=self.nationality,
                 school=school
             )
+
+    def test_exceptions_nationality(self):
+        """ nationality (max_length: 20) """
+
+        school = School.objects.create(
+            name='Student Test School',
+            students_max_number=100,
+            established_in=1996,
+            location='Bangkok, Thailand'
+        )
+
+        with self.assertRaises(DataError):
+            Student.objects.create(
+                first_name=f'{self.first_name}_fail',
+                last_name=f'{self.last_name}_fail',
+                date_of_birth=self.date_of_birth,
+                nationality='abcdefghijklmnopqrstuvwxyz',  # 26 chars length
+                school=school
+            )
+
+    def test_exceptions_first_name(self):
+        """ first_name (max_length: 20) """
+
+        school = School.objects.create(
+            name='Student Test School',
+            students_max_number=100,
+            established_in=1996,
+            location='Bangkok, Thailand'
+        )
+
+        with self.assertRaises(DataError):
+            Student.objects.create(
+                first_name='abcdefghijklmnopqrstuvwxyz',  # 26 chars length
+                last_name=f'{self.last_name}_fail',
+                date_of_birth=self.date_of_birth,
+                nationality=self.nationality,
+                school=school
+            )
+
+    def test_exceptions_last_name(self):
+        """ last_name (max_length: 20) """
+
+        school = School.objects.create(
+            name='Student Test School',
+            students_max_number=100,
+            established_in=1996,
+            location='Bangkok, Thailand'
+        )
+
+        with self.assertRaises(DataError):
+            Student.objects.create(
+                first_name=self.first_name,
+                last_name='abcdefghijklmnopqrstuvwxyz',  # 26 chars length
+                date_of_birth=self.date_of_birth,
+                nationality=self.nationality,
+                school=school
+            )
+
+    def test_str(self):
+        school = School.objects.create(
+            name='Student Test School',
+            students_max_number=100,
+            established_in=1996,
+            location='Bangkok, Thailand'
+        )
+
+        student = Student.objects.create(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            date_of_birth=self.date_of_birth,
+            nationality=self.nationality,
+            school=school
+        )
+
+        self.assertEquals(student.__str__(), f'{student.student_id}: {student.first_name} {student.last_name}')
