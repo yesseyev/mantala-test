@@ -21,5 +21,5 @@
 * [BONUS] Search and Ordering filters added
 * [BONUS] Pagination added (PageNumberPagination) with default page_size=10
 * [BONUS] Data population with Faker added. `python manage.py populate_db` ()
-* [IN PROCESS] Test coverage
+* Test coverage 93%
 * [IN PROCESS] Heroku deployment
