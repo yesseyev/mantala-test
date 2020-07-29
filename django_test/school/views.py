@@ -25,6 +25,17 @@ class SchoolModelViewSet(viewsets.ModelViewSet):
 
         return serializer_class
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except ValueError as err:
+            return Response(['established_in value must be in range [1900, <current_year>]'],
+                            status=status.HTTP_400_BAD_REQUEST)
+
 
 class StudentModelViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer

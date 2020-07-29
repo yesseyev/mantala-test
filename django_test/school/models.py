@@ -17,6 +17,11 @@ class School(models.Model):
         validators.MaxValueValidator(datetime.now().year)])
     location = models.CharField(max_length=50)
 
+    def save(self, *args, **kwargs):
+        if self.established_in < 1900 or self.established_in > datetime.now().year:
+            raise ValueError(f'established_in value must be in range [1900, {datetime.now().year}')
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f'{self.name}({self.students_max_number})'
 
