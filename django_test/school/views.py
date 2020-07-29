@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework import filters
 
 from .models import School, Student
 from .serializers import SchoolSerializer, StudentSerializer, SchoolSerializerWithoutStudentsMaxNumber
@@ -8,11 +9,30 @@ from .serializers import SchoolSerializer, StudentSerializer, SchoolSerializerWi
 class SchoolModelViewSet(viewsets.ModelViewSet):
     serializer_class = SchoolSerializer
     queryset = School.objects.all()
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', 'location']
+    ordering_fields = ['created_at', 'students_max_number', 'established_in']
+
+    def get_serializer_class(self):
+        """ Custom serializer class getter.
+        In order to make students_max_number field "write_once"
+
+        :return: serializer class depends on request method
+        """
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'PUT':
+            serializer_class = SchoolSerializerWithoutStudentsMaxNumber
+
+        return serializer_class
 
 
 class StudentModelViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['student_id', 'first_name', 'last_name', 'nationality']
+    ordering_fields = ['created_at', 'date_of_birth']
 
     def get_queryset(self):
         NESTED_PK = 'school_pk'
