@@ -1,21 +1,37 @@
 import uuid
+from datetime import datetime
 
+from django.core import validators
 from django.db import models
 
 
 class School(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified_at = models.DateTimeField(auto_now=True, null=True)
     name = models.CharField(max_length=20)
-    students_max_number = models.IntegerField(default=100, editable=False)
+    students_max_number = models.IntegerField(default=100)
+
+    # Additional fields
+    established_in = models.IntegerField(validators=[  # In range [1900, <current_year>]
+        validators.MinValueValidator(1900),
+        validators.MaxValueValidator(datetime.now().year)])
+    location = models.CharField(max_length=50)
 
     def __str__(self):
         return f'{self.name}({self.students_max_number})'
 
 
 class Student(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified_at = models.DateTimeField(auto_now=True, null=True)
     student_id = models.CharField(max_length=20, unique=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
+
+    # Additional fields
+    date_of_birth = models.DateField()
+    nationality = models.CharField(max_length=20)
 
     def __str__(self):
         return f'{self.student_id}: {self.first_name} {self.last_name}'
