@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f43a854ac7cc27124914bf3ef7b8fa6501d88948454593c15b4f3fd19e671516"
+            "sha256": "fb24a7c1f4a21a193a41359acbf132cff1121578dcf8c9268e3894055c08d18a"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.8"
+            "python_version": "3.6"
         },
         "sources": [
             {
@@ -23,6 +23,22 @@
             ],
             "index": "pypi",
             "version": "==2.2.14"
+        },
+        "djangorestframework": {
+            "hashes": [
+                "sha256:05809fc66e1c997fd9a32ea5730d9f4ba28b109b9da71fccfa5ff241201fd0a4",
+                "sha256:e782087823c47a26826ee5b6fa0c542968219263fb3976ec3c31edab23a4001f"
+            ],
+            "index": "pypi",
+            "version": "==3.11.0"
+        },
+        "drf-nested-routers": {
+            "hashes": [
+                "sha256:46e5c3abc15c782cafafd7d75028e8f9121bbc6228e3599bbb48a3daa4585034",
+                "sha256:60c1e1f5cc801e757d26a8138e61c44419ef800c213c3640c5b6138e77d46762"
+            ],
+            "index": "pypi",
+            "version": "==0.91"
         },
         "psycopg2-binary": {
             "hashes": [
