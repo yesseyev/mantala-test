@@ -7,3 +7,9 @@ __pycache__/
 env
 .idea/
 
+# Coverage exceptions
+django_test/htmlcov/
+django_test/.coverage
+django_test/.coverage.*
+django_test/coverage.xml
+django_test/*.cover

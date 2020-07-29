@@ -12,6 +12,7 @@ python-dotenv = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
 faker = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.6"
