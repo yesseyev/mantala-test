@@ -42,4 +42,4 @@ class StudentModelViewSet(viewsets.ModelViewSet):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except ValueError:
-            return Response(['Maximum number of students exceeded'], status=status.HTTP_403_FORBIDDEN)
+            return Response(['Maximum number of students exceeded'], status=status.HTTP_400_BAD_REQUEST)
