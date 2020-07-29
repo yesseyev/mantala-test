@@ -52,7 +52,7 @@ class Student(models.Model):
             if students_count >= self.school.students_max_number:
                 raise ValueError('Maximum number of students exceed')
 
-        self.student_id = self.__generate_id()
+            self.student_id = self.__generate_id()
 
         super().save(*args, **kwargs)
 
